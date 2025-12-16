@@ -1,0 +1,39 @@
+name: Terraform Module Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  terraform-unit-tests:
+    name: 'Test Module'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: 
+          - sagemaker_pipeline
+          # Add new modules here as they are created
+          # - sagemaker_model_registry
+          # - bedrock_agent
+
+    defaults:
+      run:
+        working-directory: ./${{ matrix.module }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.6.0"
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Test
+      run: terraform test
