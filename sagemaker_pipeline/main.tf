@@ -46,6 +46,13 @@ locals {
         }]
       }
       Environment = step.environment
+      NetworkConfig = step.network_config != null ? {
+        EnableNetworkIsolation = step.network_config.enable_network_isolation
+        VpcConfig = step.network_config.vpc_config != null ? {
+          SecurityGroupIds = step.network_config.vpc_config.security_group_ids
+          Subnets          = step.network_config.vpc_config.subnets
+        } : null
+      } : null
       StoppingCondition = {
         MaxRuntimeInSeconds = step.timeout_seconds
       }

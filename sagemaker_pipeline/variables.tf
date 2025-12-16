@@ -49,6 +49,13 @@ variable "processing_steps" {
     instance_count = optional(number, 1)
     volume_size_gb = optional(number, 30)
     environment    = optional(map(string), {})
+    network_config = optional(object({
+      enable_network_isolation = optional(bool, false)
+      vpc_config = optional(object({
+        security_group_ids = list(string)
+        subnets            = list(string)
+      }), null)
+    }), null)
     timeout_seconds  = optional(number, 14400) # 4 hours
     depends_on     = optional(list(string), [])
     inputs = optional(list(object({

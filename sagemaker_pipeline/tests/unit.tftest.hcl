@@ -45,3 +45,30 @@ run "schedule_creation_plan" {
         error_message = "Cron expression does not match"
     }
 }
+
+run "pipeline_with_network_config" {
+    command = plan
+
+    variables {
+        processing_steps = [
+            {
+                name           = "NetworkConfigStep"
+                image_uri      = "123456789012.dkr.ecr.us-east-1.amazonaws.com/image:latest"
+                entrypoint     = ["python", "script.py"]
+                arguments      = ["--test-arg", "value"]
+                network_config = {
+                    enable_network_isolation = true
+                    vpc_config = {
+                        security_group_ids = ["sg-0123456789abcdef0"]
+                        subnets            = ["subnet-0123456789abcdef0"]
+                    }
+                }
+            }
+        ]
+    }
+
+    assert {
+        condition     = aws_sagemaker_pipeline.sagemaker_pipeline.pipeline_definition != null
+        error_message = "Pipeline definition should not be null"
+    }
+}
