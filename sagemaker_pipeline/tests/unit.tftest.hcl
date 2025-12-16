@@ -1,3 +1,4 @@
+mock_provider "aws" {}
 variables {
     pipeline_name = "test-pipeline-validation"
     role_arn      = "arn:aws:iam::123456789012:role/service-role/AmazonSageMaker-ExecutionRole"
