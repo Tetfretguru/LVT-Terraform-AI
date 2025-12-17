@@ -1,6 +1,6 @@
 output "name" {
   description = "The name of the SageMaker Pipeline"
-  value       = aws_sagemaker_pipeline.sagemaker_pipeline.name
+  value       = aws_sagemaker_pipeline.sagemaker_pipeline.pipeline_name
 }
 
 output "arn" {
